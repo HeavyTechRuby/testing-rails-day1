@@ -131,8 +131,8 @@ end
 --- 
 
 ```ruby
-bundle add rspec-rails
-rails generate rspec:install
+bundle add rspec
+rspec --init
 ```
 
 ---
@@ -148,6 +148,7 @@ rails generate rspec:install
 
 ## Тестирование Model
 
+
 ---
 
 ## Что тестировать
@@ -160,6 +161,13 @@ rails generate rspec:install
 ---
 
 ## Установка rspec-rails
+
+--- 
+
+```ruby
+bundle add rspec-rails
+rails generate rspec:install
+```
 
 ---
 
@@ -192,5 +200,9 @@ rails generate factory_bot:model [Model]
 
 ## Links 
 
+* https://rspec.info/
 * [Factory Bot Cheat Sheet](https://github.com/brennovich/cheat-ruby-sheets/blob/master/factory_bot.md)
 * [FactoryBot Cook Book](https://thoughtbot.github.io/factory_bot/intro.html)
+* https://www.betterspecs.org/
+* https://evenbetterspecs.github.io/
+
