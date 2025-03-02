@@ -1,4 +1,6 @@
 class Podcast < ApplicationRecord
+  # Так и хочется статус енамом сделать
+
   validates :title, presence: true
   validate :author_not_blocked
 
