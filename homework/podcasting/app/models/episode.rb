@@ -24,6 +24,14 @@ class Episode < ApplicationRecord
     self.status == "draft"
   end
 
+  def unpublish
+    self.status = "unpublished"
+  end
+
+  def unpublished?
+    self.status == "unpublished"
+  end
+
   def podcast_not_archived
     return if podcast.nil?
 

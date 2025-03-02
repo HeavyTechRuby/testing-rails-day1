@@ -32,6 +32,16 @@ class Podcast < ApplicationRecord
     episode.draft
   end
 
+  def unpublish(episode)
+    return unless episodes.include?(episode)
+    episode.unpublish
+  end
+
+  def destroy_episode(episode)
+    return unless episodes.include?(episode)
+    episodes.destroy(episode)
+  end
+
   def archived?
     status == "archived"
   end

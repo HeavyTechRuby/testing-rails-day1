@@ -70,31 +70,73 @@ RSpec.describe Podcast do
   end
 
   describe 'episodes' do
-    it 'should be possible to publish episode'
-    it 'should be possible to add draft episode'
-    it 'should be possible to unpublish episode'
-    it 'should be possible to delete episode'
+    let (:author) { User.create(name: 'Arthur Morgan') }
+    let (:podcast) { Podcast.create(title: 'New Podcast!', status: 'new', author: author) }
+    let (:episode) { podcast.episodes.create(title: 'First Episode') }
+    let (:episode_draft) { podcast.episodes.create(title: 'Second Episode Draft') }
+    let (:episode_published) { podcast.episodes.create(title: 'Second Episode Draft', status: "published") }
+    let (:episode_for_delete) { Episode.create(title: 'First Episode') }
+
+    it 'should be possible to publish episode' do
+      expect(podcast.publish(episode)).to eq("published")
+    end
+
+    it 'should be possible to add draft episode' do
+      expect(podcast.add_draft(episode_draft)).to eq("draft")
+    end
+
+    it 'should be possible to unpublish episode' do
+      podcast.unpublish(episode_published)
+      expect(episode_published.unpublished?).to eq(true)
+    end
+
+
+    it 'should be possible to delete episode' do
+      podcast.publish(episode_for_delete)
+      podcast.destroy_episode(episode_for_delete)
+      expect(podcast.episodes.include?(episode_for_delete)).to eq(false)
+    end
 
     describe '#episodes.published' do
       context 'when no episodes' do
-        it "is expected to be empty"
+        it "is expected to be empty" do
+          podcast.destroy_episode(episode)
+          podcast.destroy_episode(episode_draft)
+          podcast.destroy_episode(episode_published)
+          expect(podcast.episodes.empty?).to eq(true)
+        end
       end
 
       context 'when has published episode' do
-        it "is expected to include episode"
+        it "is expected to include episode" do
+          podcast.publish(episode)
+          expect(podcast.episodes.any?).to eq(true)
+        end
       end
     end
   end
 
   describe 'author account creation' do
-    it "expect author account to be empty"
+    let (:author) { User.new(name: 'Arthur Morgan') }
+    let (:author_with_account) { User.new(name: 'Arthur Morgan', account: Account.create) }
+    let (:podcast) { Podcast.create(title: 'New Podcast!', status: 'new', author: author) }
+
+    it "expect author account to be empty" do
+      expect(author.valid?).to eq(true)
+    end
 
     context 'when no user account' do
-      it 'should add account to user after podcast created'
+      it 'should add account to user after podcast created' do
+        expect(podcast.author.account.present?).to eq(true)
+      end
     end
 
     context 'when user account exists' do
-      it 'should NOT add account to user after podcast created'
+      it 'should NOT add account to user after podcast created' do
+        account_id = author_with_account.account.id
+        podcast = Podcast.create(title: 'New Podcast!', status: 'new', author: author_with_account)
+        expect(podcast.author.account.id).to eq(account_id)
+      end
     end
   end
 end
