@@ -22,4 +22,6 @@ FactoryBot.define do
       status { 'unpublished' }
     end
   end
+
+  factory :episode_with_podcast, parent: :episode, traits: [:with_podcast]
 end

@@ -40,35 +40,79 @@ RSpec.describe Episode do
   end
 
   describe '.popular scope' do
-    it 'should not include episode'
+    let(:episode) { build(:episode, :with_podcast) }
+    let(:user) { build(:user) }
+
+    it 'should not include episode' do
+      expect(Episode.popular).to be_empty
+    end
 
     context 'when user liked' do
-      it 'should include episode'
+      it 'should include episode' do
+        episode.like(user)
+        expect(Episode.popular).to be_any
+      end
 
       context 'when user removed his like' do
-        it 'should not include episode'
+        it 'should not include episode' do
+          episode.like(user)
+          episode.unlike(user)
+          expect(Episode.popular).to be_empty
+        end
       end
     end
   end
 
   describe 'comments' do
-    it 'should be empty when no comments'
-    it 'should be possible to add comment'
-    it 'should be possible to remove comment'
+    let(:episode) { create(:episode, :with_podcast) }
+    let(:user) { build(:user) }
+
+    it 'should be empty when no comments' do
+      expect(episode.comments).to be_empty
+    end
+
+    it 'should be possible to add comment' do
+      comments_before = episode.comments.count
+      episode.add_comment(user, "some text")
+      expect(comments_before + 1).to be(episode.comments.count)
+    end
+
+    it 'should be possible to remove comment' do
+      episode.add_comment(user, "some text")
+      comments_before = episode.comments.count
+      episode.del_comment(user)
+      expect(comments_before - 1).to be(episode.comments.count)
+    end
 
     context 'when episode archived' do
-      it 'should be possible to add comment'
+      it 'should be possible to add comment' do
+        episode.podcast.update(status: 'archived')
+        comments_before = episode.comments.count
+        episode.add_comment(user, "some text")
+        expect(comments_before + 1).to be(episode.comments.count)
+      end
     end
   end
 
   describe 'stats' do
+    let(:user) { build(:user) }
+    let(:episode) { build(:episode_with_podcast) }
+
     context 'when user played episode' do
-      it 'should increase plays_count'
+      it 'should increase plays_count' do
+        expect {
+          create(:play_stat, user: user, episode: episode, )
+        }.to change { episode.play_stats.count }.by(1)
+      end
     end
 
     context 'when user paused episode' do
-      it 'should not change plays_count'
-      it 'should save position'
+      it 'should not change plays_count' do
+
+      end
+
+      it 'should save position' do
+      end
     end
   end
 end
