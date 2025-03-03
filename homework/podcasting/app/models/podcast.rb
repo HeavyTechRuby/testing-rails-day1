@@ -1,4 +1,5 @@
 class Podcast < ApplicationRecord
+
   validates :title, presence: true
   validate :author_not_blocked
 
@@ -28,6 +29,16 @@ class Podcast < ApplicationRecord
   def add_draft(episode)
     self.episodes << episode
     episode.draft
+  end
+
+  def unpublish(episode)
+    return unless episodes.include?(episode)
+    episode.unpublish
+  end
+
+  def destroy_episode(episode)
+    return unless episodes.include?(episode)
+    episodes.destroy(episode)
   end
 
   def archived?
