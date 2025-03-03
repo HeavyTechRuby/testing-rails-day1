@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe Podcast do
   describe 'validations' do
     context 'when valid attributes' do
-      let (:podcast) { build(:podcast) }
+      let(:podcast) { build(:podcast) }
 
       it 'should be valid' do
         expect(podcast.valid?).to eq(true)
@@ -11,8 +11,8 @@ RSpec.describe Podcast do
     end
 
     describe 'on title' do
-      let (:podcast_without_title) { build(:podcast, :with_nil_title) }
-      let (:podcast_empty_title) { build(:podcast, :with_empty_title) }
+      let(:podcast_without_title) { build(:podcast, :with_nil_title) }
+      let(:podcast_empty_title) { build(:podcast, :with_empty_title) }
 
       it 'should be invalid when no title' do
         expect(podcast_without_title).to be_invalid
@@ -28,8 +28,8 @@ RSpec.describe Podcast do
     end
 
     describe 'on author' do
-      let (:podcast_no_author) { build(:podcast, author: nil) }
-      let (:podcast_with_blocked_author) { build(:podcast, :with_blocked_author) }
+      let(:podcast_no_author) { build(:podcast, author: nil) }
+      let(:podcast_with_blocked_author) { build(:podcast, :with_blocked_author) }
 
       it 'should be invalid when no author' do
         expect(podcast_no_author.valid?).to eq(false)
@@ -42,10 +42,10 @@ RSpec.describe Podcast do
   end
 
   describe 'subscriptions' do
-    let (:podcast) { build(:podcast) }
-    let (:subscriber) { build(:subscriber) }
-    let (:subscription) { podcast.subscribe(subscriber) }
-    let (:no_subscriber) { build(:no_subscriber) }
+    let(:podcast) { build(:podcast) }
+    let(:subscriber) { build(:subscriber) }
+    let(:subscription) { podcast.subscribe(subscriber) }
+    let(:no_subscriber) { build(:no_subscriber) }
 
     it 'should be empty' do
       expect(podcast.subscriptions).to be_empty
@@ -65,8 +65,8 @@ RSpec.describe Podcast do
   end
 
   describe 'episodes' do
-    let (:episode) { build(:episode) }
-    let (:podcast) { build(:podcast) }
+    let(:episode) { build(:episode) }
+    let(:podcast) { build(:podcast) }
 
     it 'should be possible to publish episode' do
       podcast.publish(episode)
@@ -108,10 +108,10 @@ RSpec.describe Podcast do
   end
 
   describe 'author account creation' do
-    let (:author_without_account) { build(:author, :without_account) }
-    let (:podcast_no_account) { build(:podcast, :with_author_without_account) }
-    let (:author) { build(:author) }
-    let (:podcast) { build(:podcast, author: author) }
+    let(:author_without_account) { build(:author, :without_account) }
+    let(:podcast_no_account) { build(:podcast, :with_author_without_account) }
+    let(:author) { build(:author) }
+    let(:podcast) { build(:podcast, author: author) }
 
     it "expect author account to be empty" do
       expect(author_without_account.account).to be_blank

@@ -4,6 +4,10 @@ FactoryBot.define do
     title { 'New title' }
     association :author, factory: :author
 
+    trait :with_archived_status do
+      status { 'archived' }
+    end
+
     trait :with_nil_title do
       title { nil }
     end
@@ -24,4 +28,6 @@ FactoryBot.define do
       association :author, factory: :author_blocked
     end
   end
+
+  factory :podcast_archived, parent: :podcast, traits: [:with_archived_status]
 end

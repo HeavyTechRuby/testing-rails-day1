@@ -2,23 +2,44 @@ require 'rails_helper'
 
 RSpec.describe Episode do
   describe 'validations' do
+    let(:episode) { build(:episode, :with_podcast) }
+    let(:episode_empty_title) { build(:episode, :with_podcast, title: '') }
+    let(:episode_nil_title) { build(:episode, :with_podcast, title: nil) }
+    let(:episode_without_podcast) { build(:episode) }
+    let(:episode_with_podcast_archived) { build(:episode, :with_archived_podcast) }
+
     context 'when valid attributes' do
-      it 'should be valid'
+      it 'should be valid' do
+        expect(episode).to be_valid
+      end
     end
 
     describe 'on title' do
-      it 'should be invalid when no title'
-      it 'should be invalid with empty title'
-      it 'should be invalid title has no text'
+      it 'should be invalid when no title' do
+        expect(Episode.new).to be_invalid
+      end
+
+      it 'should be invalid with empty title' do
+        expect(episode_empty_title).to be_invalid
+      end
+
+      it 'should be invalid title has no text' do
+        expect(episode_nil_title).to be_invalid
+      end
     end
 
     describe 'on podcast' do
-      it 'should be invalid when no podcast'
-      it 'should be invalid when podcast is archived'
+      it 'should be invalid when no podcast' do
+        expect(episode_without_podcast).to be_invalid
+      end
+
+      it 'should be invalid when podcast is archived' do
+        expect(episode_with_podcast_archived).to be_invalid
+      end
     end
   end
 
-  describe '.popluar scope' do
+  describe '.popular scope' do
     it 'should not include episode'
 
     context 'when user liked' do
