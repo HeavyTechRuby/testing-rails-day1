@@ -46,7 +46,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_03_123454) do
   create_table "play_stats", force: :cascade do |t|
     t.integer "episode_id", null: false
     t.integer "user_id", null: false
-    t.integer "poistion"
+    t.integer "position"
+    t.boolean "is_finished"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["episode_id"], name: "index_play_stats_on_episode_id"

@@ -9,6 +9,7 @@ class Episode < ApplicationRecord
 
   scope :published, -> { where(status: :published) }
   scope :popular, -> { joins(:likes) }
+  scope :played, -> { joins(:play_stats).where(play_stats: { is_finished: true }) }
 
   def like(user)
     Like.create(user: user, episode: self)

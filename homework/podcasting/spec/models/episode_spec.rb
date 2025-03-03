@@ -97,21 +97,24 @@ RSpec.describe Episode do
   describe 'stats' do
     let(:user) { build(:user) }
     let(:episode) { build(:episode_with_podcast) }
+    let(:play_stat_for_position) { create(:play_stat, user: user, episode: episode, position: 10) }
 
     context 'when user played episode' do
       it 'should increase plays_count' do
-        expect {
-          create(:play_stat, user: user, episode: episode, )
-        }.to change { episode.play_stats.count }.by(1)
+        expect { create(:play_stat, user: user, episode: episode, is_finished: true) }
+          .to change { Episode.played.count }.by(1)
       end
+
     end
 
     context 'when user paused episode' do
       it 'should not change plays_count' do
-
+        expect { create(:play_stat, user: user, episode: episode, position: 10) }
+        .to change { Episode.played.count }.by(0)
       end
 
       it 'should save position' do
+        expect(play_stat_for_position.position).not_to eq(0)
       end
     end
   end
