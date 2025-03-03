@@ -25,6 +25,11 @@ class Podcast < ApplicationRecord
     episode.publish
   end
 
+  def unpublish(episode)
+    self.episodes.delete(episode)
+    episode.unpublish
+  end
+
   def add_draft(episode)
     self.episodes << episode
     episode.draft
@@ -32,5 +37,9 @@ class Podcast < ApplicationRecord
 
   def archived?
     status == "archived"
+  end
+
+  def delete(episode)
+    self.episodes.delete(episode)
   end
 end
