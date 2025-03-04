@@ -4,12 +4,18 @@ class Episode < ApplicationRecord
 
   belongs_to :podcast
   has_many :likes
+  has_many :comments
+  has_many :stats
 
   scope :published, -> { where(status: :published) }
   scope :popular, -> { joins(:likes) }
 
   def publish
     self.status = "published"
+  end
+
+  def unpublish
+    self.status = "draft"
   end
 
   def published?
@@ -30,5 +36,22 @@ class Episode < ApplicationRecord
     if podcast.archived?
       errors.add(:podcast, "is archived")
     end
+  end
+
+  def like_by(user)
+    likes.create(user:)
+  end
+
+  def unliked_by(user)
+    likes.find_by(user:).destroy
+  end
+
+  def play_by(user)
+    stats.create(user:)
+  end
+
+  def pause_by(user, position)
+    stat = stats.find_by(user:)
+    stat.update(position:)
   end
 end
