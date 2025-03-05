@@ -86,10 +86,9 @@ RSpec.describe Episode do
 
     context 'when episode archived' do
       it 'should be possible to add comment' do
-        episode.podcast.update(status: 'archived')
-        comments_before = episode.comments.count
-        episode.add_comment(user, "some text")
-        expect(comments_before + 1).to be(episode.comments.count)
+        expect {
+          episode.add_comment(user, "some text")
+        }.to change { episode.comments.count }.by(1)
       end
     end
   end
@@ -104,7 +103,6 @@ RSpec.describe Episode do
         expect { create(:play_stat, user: user, episode: episode, is_finished: true) }
           .to change { Episode.played.count }.by(1)
       end
-
     end
 
     context 'when user paused episode' do

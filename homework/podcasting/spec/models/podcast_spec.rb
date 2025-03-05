@@ -32,7 +32,7 @@ RSpec.describe Podcast do
       let(:podcast_with_blocked_author) { build(:podcast, :with_blocked_author) }
 
       it 'should be invalid when no author' do
-        expect(podcast_no_author.valid?).to eq(false)
+        expect(podcast_no_author).to be_invalid
       end
 
       it 'should be invalid when user is blocked' do
@@ -53,13 +53,13 @@ RSpec.describe Podcast do
 
     context 'when user subscribed' do
       it 'should include user' do
-        expect(subscription.user == subscriber).to eq(true)
+        expect(subscription.user).to eq(subscriber)
       end
     end
 
     context 'when user NOT subscribed' do
       it 'should not include user' do
-        expect(subscription.user == no_subscriber).to eq(false)
+        expect(subscription.user).not_to eq(no_subscriber)
       end
     end
   end
