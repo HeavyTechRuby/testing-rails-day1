@@ -1,6 +1,8 @@
 class User < ApplicationRecord
   has_one :account, autosave: true
   has_many :likes
+  has_many :comments
+  has_many :play_stats
 
   def block
     self.blocked = true
